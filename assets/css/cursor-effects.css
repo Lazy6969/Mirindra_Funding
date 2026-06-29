@@ -1,0 +1,188 @@
+/* ============================================
+   EFFETS DE CURSEUR PERSONNALISÉS
+   ============================================ */
+
+/* Curseur principal */
+.custom-cursor {
+    width: 40px; /* Ajustez la largeur de votre image PNG */
+    height: 40px; /* Ajustez la hauteur de votre image PNG */
+    position: fixed;
+    pointer-events: none;
+    z-index: 2147483647;
+    background-image: url('../images/cursor.png'); /* Assurez-vous que le nom du fichier est correct */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    mix-blend-mode: normal;
+    transition: transform 0.15s ease; /* Ne transitionne que la transformation */
+    transform: translate(-50%, -50%);
+}
+
+.custom-cursor.hover {
+    transform: translate(-50%, -50%) scale(2);
+    background-color: transparent; /* Pas de changement de couleur de fond */
+    border-color: transparent; /* Pas de changement de couleur de bordure */
+}
+
+.custom-cursor.click {
+    transform: translate(-50%, -50%) scale(0.8);
+    background-color: transparent; /* Pas de changement de couleur de fond */
+}
+
+/* Point central du curseur */
+.cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 2147483647;
+    transform: translate(-50%, -50%);
+    display: none; /* On cache le point pour laisser place à l'icône */
+}
+
+/* Effet de traînée */
+.cursor-trail {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    pointer-events: none;
+    z-index: 2147483646;
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.1);
+    }
+}
+
+/* Curseur spécial pour les liens */
+a, button, .btn, [role="button"] {
+    cursor: none;
+}
+
+a:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor,
+.btn:hover ~ .custom-cursor {
+    transform: translate(-50%, -50%) scale(1.2); /* Ajuste l'échelle pour l'avion */
+}
+
+/* Effet magnétique */
+.magnetic-element {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Curseur texte */
+.text-cursor {
+    position: fixed;
+    padding: 8px 16px;
+    background: #667eea;
+    color: white;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 2147483647;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.text-cursor.visible {
+    opacity: 1;
+}
+
+/* Effet de vague au clic */
+.click-wave {
+    position: fixed;
+    border: 2px solid #667eea;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2147483647;
+    animation: waveExpand 0.6s ease-out forwards;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes waveExpand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+    }
+}
+
+/* Particules au clic */
+.click-particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: #667eea;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2147483647;
+    animation: particleSpread 0.6s ease-out forwards;
+}
+
+@keyframes particleSpread {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Masquer le curseur par défaut sur desktop */
+@media (min-width: 769px) {
+    body {
+        cursor: none;
+    }
+    
+    /* Cache le curseur natif pour la plupart des éléments interactifs où le curseur personnalisé doit apparaître */
+    a, button, .btn, [role="button"], .project-card, .category-card, .stat-card, .footer-profile-wrapper {
+        cursor: none;
+    }
+
+    /* Pour les champs de texte, on veut le curseur natif "text" */
+    /* Utilise !important pour s'assurer que le curseur natif de texte s'affiche */
+    input[type="text"], input[type="email"], input[type="password"], input:not([type="button"]):not([type="submit"]):not([type="reset"]), textarea, select {
+        cursor: text !important;
+    }
+
+    /* Masque le curseur personnalisé lorsque le curseur natif est visible (ex: sur les champs de texte) */
+    body.hide-custom-cursor .custom-cursor,
+    body.hide-custom-cursor .cursor-dot,
+    body.hide-custom-cursor .cursor-trail {
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+}
+
+/* Désactiver sur mobile */
+@media (max-width: 768px) {
+    .custom-cursor,
+    .cursor-dot,
+    .cursor-trail,
+    .text-cursor {
+        display: none !important;
+    }
+    
+    body, * {
+        cursor: auto !important;
+    }
+}
